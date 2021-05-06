@@ -284,15 +284,18 @@ public class frmMain extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnJugarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJugarActionPerformed
-        if(generador.isAlive()==false){
-        generador = new Uno();
-        generador.start();
-        player1.start();
-        player2.start();
-        player3.start();
-        btnJugar.setEnabled(false); 
+        if (generador.isAlive() == false) { //verifica si el Hilo sigue en USO
+            generador = new Uno();
+            generador.start();
+            player1 = new Jugador(1);
+            player2 = new Jugador(2);
+            player3 = new Jugador(3);
+            player1.start();
+            player2.start();
+            player3.start();
+            btnJugar.setEnabled(false);
         }
-       
+
     }//GEN-LAST:event_btnJugarActionPerformed
 
     /**
