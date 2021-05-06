@@ -154,6 +154,7 @@ public class frmMain extends javax.swing.JFrame {
                 lblCarta.repaint();
             }
             try {
+                btnJugar.setText("Calculando Resultados");
                 Thread.sleep(2000);
                 System.out.println("Calculando resultados...");
             } catch (InterruptedException ex) {
