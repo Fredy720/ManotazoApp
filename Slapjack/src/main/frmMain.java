@@ -285,6 +285,7 @@ public class frmMain extends javax.swing.JFrame {
 
     private void btnJugarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJugarActionPerformed
         if (generador.isAlive() == false) { //verifica si el Hilo sigue en USO
+            DefaultTableModel model = new DefaultTableModel(columnNames, 0);
             generador = new Uno();
             generador.start();
             player1 = new Jugador(1);
@@ -294,6 +295,8 @@ public class frmMain extends javax.swing.JFrame {
             player2.start();
             player3.start();
             btnJugar.setEnabled(false);
+             tblResultados.setModel(model);
+            
         }
 
     }//GEN-LAST:event_btnJugarActionPerformed
