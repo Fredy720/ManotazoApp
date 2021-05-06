@@ -9,6 +9,7 @@ import java.awt.Image;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -30,6 +31,7 @@ public class frmMain extends javax.swing.JFrame {
     private Jugador player3;
     String[] columnNames = {"Puesto", "Jugador", "Tiempo"};
     DefaultTableModel model = new DefaultTableModel(columnNames, 0);
+    Semaphore mutex = new Semaphore(1, true);
 
     /**
      * Creates new form frmMain
@@ -75,6 +77,11 @@ public class frmMain extends javax.swing.JFrame {
                 if (generador.getNumeroCarta() == 5) {
                     manotazo();
                     System.out.println("Jugador " + this.numero + " entrando a la región crítica");
+                    try {
+                        mutex.acquire();
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     ordenJugadores[contadorJugadores] = "Jugador " + String.valueOf(numero);
                     DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
                     Date date = new Date();
@@ -82,6 +89,7 @@ public class frmMain extends javax.swing.JFrame {
                     ordenLugares[contadorJugadores] = String.valueOf(contadorJugadores + 1) + " lugar";
                     contadorJugadores++;
                     System.out.println("Jugador " + this.numero + " saliendo de la región crítica");
+                    mutex.release();
                     intento = true;
                     System.out.println("Jugador " + this.numero + " esperando resultados");
                 }
@@ -276,12 +284,15 @@ public class frmMain extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnJugarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJugarActionPerformed
+        if(generador.isAlive()==false){
         generador = new Uno();
         generador.start();
         player1.start();
         player2.start();
         player3.start();
-        btnJugar.setEnabled(false);
+        btnJugar.setEnabled(false); 
+        }
+       
     }//GEN-LAST:event_btnJugarActionPerformed
 
     /**
